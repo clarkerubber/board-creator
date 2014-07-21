@@ -21,6 +21,9 @@ position would be:
 
 rnbqkbnrpppppppp--------------------------------PPPPPPPPRNBQKBNR
 
+When requesting a page, it'll look something like this:
+
+board-creator.php?p=rnbqkbnrpppppppp--------------------------------PPPPPPPPRNBQKBNR
 */
 
 header("Content-type: image/png");
