@@ -19,44 +19,52 @@ From the top left of the board to the bottom right, the string is
 either the pieces letter, or a dask (-), for example, the starting
 position would be:
 
-rnbqkbnrpppppppp--------------------------------PPPPPPPPRNBQKBNR
-
-When requesting a page, it'll look something like this:
-
-board-creator.php?p=rnbqkbnrpppppppp--------------------------------PPPPPPPPRNBQKBNR
 */
 
-header("Content-type: image/png");
-$position = $_GET['p'];
-$board = imagecreatefrompng("images/board.png");
-$pieces = array(
-	'K' => imagecreatefrompng("images/wk.png"),
-	'Q' => imagecreatefrompng("images/wq.png"),
-	'R' => imagecreatefrompng("images/wr.png"),
-	'B' => imagecreatefrompng("images/wb.png"),
-	'N' => imagecreatefrompng("images/wn.png"),
-	'P' => imagecreatefrompng("images/wp.png"),
-	'k' => imagecreatefrompng("images/k.png"),
-	'q' => imagecreatefrompng("images/q.png"),
-	'r' => imagecreatefrompng("images/r.png"),
-	'b' => imagecreatefrompng("images/b.png"),
-	'n' => imagecreatefrompng("images/n.png"),
-	'p' => imagecreatefrompng("images/p.png")
-	);
+function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 'w') {
+	header("Content-type: image/png");
+	$board = imagecreatefrompng("images/board.png");
+	$pieces = array(
+		'K' => imagecreatefrompng("images/wk.png"),
+		'Q' => imagecreatefrompng("images/wq.png"),
+		'R' => imagecreatefrompng("images/wr.png"),
+		'B' => imagecreatefrompng("images/wb.png"),
+		'N' => imagecreatefrompng("images/wn.png"),
+		'P' => imagecreatefrompng("images/wp.png"),
+		'k' => imagecreatefrompng("images/k.png"),
+		'q' => imagecreatefrompng("images/q.png"),
+		'r' => imagecreatefrompng("images/r.png"),
+		'b' => imagecreatefrompng("images/b.png"),
+		'n' => imagecreatefrompng("images/n.png"),
+		'p' => imagecreatefrompng("images/p.png")
+		);
 
-$position = str_split($position, 8);
+	$position = explode('/', $p);
 
-foreach ($position as $key => $value) {
-	$position[$key] = str_split($value);
-}
-
-for ( $x = 0; $x < 8; $x++ ) {
-	for ( $y = 0; $y < 8; $y++ ) {
-		if ( $position[$x][$y] !== '-' && isset( $pieces[$position[$x][$y]] ) ) {
-			imagecopy( $board, $pieces[$position[$x][$y]], 50*$y, 50*$x, 0, 0, 50, 50 );
+	if ( $s == 'b' ) {
+		foreach ( $position as $key => $rank ) {
+			$position[7-$key] = array_reverse( str_split ($rank) );
+		}
+	} else {
+		foreach ( $position as $key => $rank ) {
+			$position[$key] = str_split ($rank);
 		}
 	}
+
+	foreach ( $position as $number => $rank ) {
+		$row = 0;
+		foreach ( $rank as $square ) {
+			if ( intval( $square ) > 0 ) {
+				$row += intval( $square );
+			} else {
+				imagecopy( $board, $pieces[$square], 50*$row, 50*$number, 0, 0, 50, 50 );
+				$row++;
+			}
+		}
+	}
+
+	imagepng($board);
+	imagedestroy($board);
 }
 
-imagepng($board);
-imagedestroy($board);
+createBoard();
