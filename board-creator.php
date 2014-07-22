@@ -1,26 +1,5 @@
 <?php
 
-/* A positions string is defined as following:
-White King 		= K
-White Queen 	= Q
-White Rook 		= R
-White Bishop 	= B
-White Knight 	= N
-White Pawn 		= P
-
-Black King		= k
-Black Queen 	= q
-Black Rook 		= r
-Black Bishop 	= b
-Black Knight 	= k
-Black Pawn 		= p
-
-From the top left of the board to the bottom right, the string is
-either the pieces letter, or a dask (-), for example, the starting
-position would be:
-
-*/
-
 function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 'w', $lastmove = '', $board = 'blue2') {
 	header("Content-type: image/png");
 	$board = imagecreatefrompng("images/boards/$board.png");
@@ -90,4 +69,4 @@ function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 
 	imagedestroy($board);
 }
 
-createBoard('2kr1b1r/ppp1pppp/8/2q4b/4n3/1P3P2/PB1N2PP/1R1QKB1R', 'b', 'f6e4');
+createBoard($argv[1], $argv[2], $argv[3]);
