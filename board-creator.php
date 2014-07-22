@@ -21,9 +21,10 @@ position would be:
 
 */
 
-function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 'w', $board = 'blue2') {
+function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 'w', $lastmove = '', $board = 'blue2') {
 	header("Content-type: image/png");
 	$board = imagecreatefrompng("images/boards/$board.png");
+	$move = imagecreatefrompng("images/last.png");
 	$pieces = array(
 		'K' => imagecreatefrompng("images/wk.png"),
 		'Q' => imagecreatefrompng("images/wq.png"),
@@ -38,6 +39,28 @@ function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 
 		'n' => imagecreatefrompng("images/n.png"),
 		'p' => imagecreatefrompng("images/p.png")
 		);
+
+	$a_to_n = array(
+		'a' => 0,
+		'b' => 1,
+		'c' => 2,
+		'd' => 3,
+		'e' => 4,
+		'f' => 5,
+		'g' => 6,
+		'h' => 7
+		);
+
+	if ( strlen( $lastmove ) == 4 ) {
+		$lastmove = str_split( $lastmove );
+		if ( $s == 'w' ) {
+			imagecopy( $board, $move, 50*($a_to_n[$lastmove[0]]), 50*(8-$lastmove[1]), 0, 0, 50, 50 );
+			imagecopy( $board, $move, 50*($a_to_n[$lastmove[2]]), 50*(8-$lastmove[3]), 0, 0, 50, 50 );
+		} else {
+			imagecopy( $board, $move, 50*(7-$a_to_n[$lastmove[0]]), 50*($lastmove[1]-1), 0, 0, 50, 50 );
+			imagecopy( $board, $move, 50*(7-$a_to_n[$lastmove[2]]), 50*($lastmove[3]-1), 0, 0, 50, 50 );
+		}
+	}
 
 	$position = explode('/', $p);
 
@@ -67,4 +90,4 @@ function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 
 	imagedestroy($board);
 }
 
-createBoard('2kr1b1r/ppp1pppp/8/2q4b/4n3/1P3P2/PB1N2PP/1R1QKB1R', 'b');
+createBoard('2kr1b1r/ppp1pppp/8/2q4b/4n3/1P3P2/PB1N2PP/1R1QKB1R', 'b', 'f6e4');
