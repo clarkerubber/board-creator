@@ -21,7 +21,7 @@ position would be:
 
 */
 
-function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 'w', $board = 'blue') {
+function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 'w', $board = 'blue2') {
 	header("Content-type: image/png");
 	$board = imagecreatefrompng("images/boards/$board.png");
 	$pieces = array(
@@ -67,4 +67,4 @@ function createBoard ( $p = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR', $s = 
 	imagedestroy($board);
 }
 
-createBoard();
+createBoard('2kr1b1r/ppp1pppp/8/2q4b/4n3/1P3P2/PB1N2PP/1R1QKB1R', 'b');
